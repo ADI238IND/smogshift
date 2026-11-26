@@ -1,5 +1,5 @@
-import {compare, forecast, createForecastLoader, sharedPickup, decodeChoice} from './engine.mjs';
-import {actions, buildPrompt, modelChoice} from './coach.mjs';
+import {compare, forecast, createForecastLoader, sharedPickup, decodeChoice} from './engine.mjs?v=2';
+import {actions, buildPrompt, modelChoice} from './coach.mjs?v=2';
 
 const loadForecast = createForecastLoader(forecast);
 const numberFormat = new Intl.NumberFormat('en-IN');
