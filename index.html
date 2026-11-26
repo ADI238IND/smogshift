@@ -19,5 +19,20 @@
 <details><summary>Optional Gemini API key</summary><label for="key">Key (sent only to Google’s Gemini API)</label><input id="key" type="password" maxlength="150" autocomplete="off"></details>
 <button type="submit">Find a practical swap</button></form><p id="suggestion" role="status"></p>
 <details><summary>Browse all vetted swaps</summary><ul id="actions"></ul></details></section>
+<section class="panel coach" aria-labelledby="pickup-title">
+<p class="eyebrow">NEIGHBOURHOOD PICKUP</p>
+<h2 id="pickup-title">What changes when families share a ride?</h2>
+<p>Compare one car per household with a shared trip. Use this estimate for pickups with the same round-trip distance and no extra detour.</p>
+<form id="pickup">
+<div class="pickupFields">
+<div><label for="households">Households</label><input id="households" type="number" min="1" max="20" value="4" required></div>
+<div><label for="vehicles">Shared vehicles</label><input id="vehicles" type="number" min="1" max="20" value="2" required></div>
+<div><label for="roundTrip">Round-trip km per vehicle</label><input id="roundTrip" type="number" min="1" max="100" value="8" required></div>
+</div>
+<button type="submit">Compare shared pickup</button>
+</form>
+<p id="pickupResult" class="pickupResult" role="status"></p>
+<p class="explain">Vehicle distance is a measure of travel avoided. Actual emissions depend on the vehicles, fuels and traffic.</p>
+</section>
 <footer>Forecasts are modeled city-scale estimates. Check your local authority’s advisories. <a href="https://open-meteo.com/en/docs/air-quality-api">Open-Meteo / CAMS</a> · <a href="https://www.epa.gov/wildfires/reduce-your-smoke-exposure">EPA smoke guidance</a> · <a href="https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-indoors">EPA indoor guidance</a></footer>
 </main><script type="module" src="app.mjs"></script></body></html>

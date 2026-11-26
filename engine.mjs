@@ -19,6 +19,38 @@ export function compare(hours, current, minutes) {
   };
 }
 
+export const FORECAST_TTL_MS = 60_000;
+
+export function createForecastLoader(load, clock = Date.now) {
+  const cache = new Map();
+  return function loadCity(city) {
+    if (!Object.hasOwn(cities, city)) return Promise.reject(new Error('Unsupported city'));
+    const previous = cache.get(city);
+    if (previous && clock() < previous.expires) return previous.promise;
+    const entry = {expires: Infinity};
+    entry.promise = Promise.resolve().then(() => load(city)).then(hours => {
+      entry.expires = clock() + FORECAST_TTL_MS;
+      return hours;
+    }).catch(error => {
+      cache.delete(city);
+      throw error;
+    });
+    cache.set(city, entry);
+    return entry.promise;
+  };
+}
+
+// Compare otherwise identical round trips. Distance measures vehicle travel,
+// not pollution concentration or personal exposure.
+export function sharedPickup({households, vehicles, roundTripKm}) {
+  if (!Number.isInteger(households) || households < 1 || households > 20 ||
+      !Number.isInteger(vehicles) || vehicles < 1 || vehicles > households ||
+      !Number.isInteger(roundTripKm) || roundTripKm < 1 || roundTripKm > 100) return null;
+  const baseline = households * roundTripKm;
+  const shared = vehicles * roundTripKm;
+  return {baseline, shared, avoided: baseline - shared};
+}
+
 export async function forecast(city, fetcher = fetch) {
   if (!Object.hasOwn(cities, city)) throw new Error('Unsupported city');
   const [latitude, longitude] = cities[city];
@@ -31,9 +63,13 @@ export async function forecast(city, fetcher = fetch) {
   const currentHour = current.time.slice(0, 13) + ':00';
   const start = hourly.time.indexOf(currentHour);
   if (start < 0) throw new Error('Missing current hour');
-  return hourly.time.slice(start, start + 7).map((time, offset) => ({
+  const hours = hourly.time.slice(start, start + 7).map((time, offset) => ({
     time, pm: hourly.pm2_5[start + offset], aqi: hourly.us_aqi[start + offset]
   }));
+  if (!Number.isFinite(hours[0].pm) || hours[0].pm < 0) {
+    throw new Error('Current PM2.5 is unavailable');
+  }
+  return hours;
 }
 
 export function decodeChoice(raw, choices) {

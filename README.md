@@ -29,5 +29,21 @@ with a fixed school commute.
 
 ## Verify
 
-Run `node --test engine.test.mjs`. Tests cover forecast alignment, missing data,
+Run `node --test`. Tests cover forecast alignment, missing data,
 comparison math, invalid durations and model-output validation.
+
+## How the code fits together
+
+- `engine.mjs` handles forecast loading, time-window comparisons, and shared
+  pickup calculations. The forecast loader shares in-flight requests per city,
+  caches successful responses for 60 seconds, and allows retries after failures.
+- `coach.mjs` holds reviewed household actions and the Gemini adapters.
+- `app.mjs` connects each form to the two modules and renders results using text
+  nodes. The application has no build step, framework or third-party scripts.
+
+### Shared pickup example
+
+Four households making separate 8 km round trips drive 32 vehicle-km. With two
+vehicles and no detours, the same pickups take 16 vehicle-km. The avoided distance
+is 16 vehicle-km. SmogShift reports the difference as vehicle distance so families
+can compare options without assuming fuel types, emission factors or route data.
