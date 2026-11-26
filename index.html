@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SmogShift | The daily air planner</title><meta name="description" content="Compare everyday household routines during winter smog.">
+<link rel="stylesheet" href="style.css"></head><body>
+<header><span class="brand"><span aria-hidden="true">◉</span> SmogShift</span><span>Delhi NCR &amp; the Indo-Gangetic Plain</span></header>
+<main>
+<section class="hero"><p class="kicker">THE DAILY AIR PLANNER</p><h1>A better plan<br>for a <em>smoggy day.</em></h1><p>Compare your usual routine with a practical swap. See what changes for outdoor exposure and what reduces pollution at the source.</p></section>
+<div class="layout">
+<section class="panel"><h2>Your routine</h2><form id="planner">
+<label for="city">City</label><select id="city"><option>Ghaziabad</option><option>Noida</option><option>Delhi</option><option>Gurugram</option><option>Lucknow</option><option>Patna</option></select>
+<label for="routine">Outdoor activity</label><select id="routine"><option value="flex">Flexible walk or errands</option><option value="fixed">Fixed school or work commute</option></select>
+<label for="minutes">Minutes outdoors (5–60)</label><input id="minutes" type="number" min="5" max="60" required value="30">
+<label class="toggle"><input type="checkbox" id="demo" checked> Use sample winter-smog data</label>
+<button type="submit">Compare my routine</button></form></section>
+<section class="panel result" aria-labelledby="result-title"><div class="eyebrow" id="source">SAMPLE DATA · IST</div><h2 id="result-title" tabindex="-1">Your outdoor comparison</h2><p id="status" role="status"></p><div id="results"></div><div id="timeline"></div></section>
+</div>
+<section class="panel coach"><div><p class="eyebrow">HOUSEHOLD COACH</p><h2>What can your household change today?</h2><p>Write your constraint in one sentence. Gemini Nano can match it to a vetted action on compatible desktop Chrome. A Gemini API key is optional and stays in this tab.</p></div>
+<form id="coach"><label for="constraint">Your constraint</label><input id="constraint" required maxlength="220" placeholder="We can’t change school pickup and I usually drive">
+<details><summary>Optional Gemini API key</summary><label for="key">Key (sent only to Google’s Gemini API)</label><input id="key" type="password" maxlength="150" autocomplete="off"></details>
+<button type="submit">Find a practical swap</button></form><p id="suggestion" role="status"></p>
+<details><summary>Browse all vetted swaps</summary><ul id="actions"></ul></details></section>
+<footer>Forecasts are modeled city-scale estimates. Check your local authority’s advisories. <a href="https://open-meteo.com/en/docs/air-quality-api">Open-Meteo / CAMS</a> · <a href="https://www.epa.gov/wildfires/reduce-your-smoke-exposure">EPA smoke guidance</a> · <a href="https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-indoors">EPA indoor guidance</a></footer>
+</main><script type="module" src="app.mjs"></script></body></html>
