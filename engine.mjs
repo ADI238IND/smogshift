@@ -51,6 +51,10 @@ export function sharedPickup({households, vehicles, roundTripKm}) {
   return {baseline, shared, avoided: baseline - shared};
 }
 
+/**
+ * Normalize the first seven city-local forecast hours starting at the model's
+ * current hour. Downstream comparisons use the same series for every activity.
+ */
 export async function forecast(city, fetcher = fetch) {
   if (!Object.hasOwn(cities, city)) throw new Error('Unsupported city');
   const [latitude, longitude] = cities[city];
@@ -60,6 +64,10 @@ export async function forecast(city, fetcher = fetch) {
   const response = await fetcher(url, {signal: AbortSignal.timeout(9000)});
   if (!response.ok) throw new Error('Forecast unavailable');
   const {hourly, current} = await response.json();
+  if (!Array.isArray(hourly?.time) || !Array.isArray(hourly.pm2_5) ||
+      !Array.isArray(hourly.us_aqi) || typeof current?.time !== 'string') {
+    throw new Error('Invalid forecast response');
+  }
   const currentHour = current.time.slice(0, 13) + ':00';
   const start = hourly.time.indexOf(currentHour);
   if (start < 0) throw new Error('Missing current hour');

@@ -38,8 +38,8 @@ comparison math, invalid durations and model-output validation.
   pickup calculations. The forecast loader shares in-flight requests per city,
   caches successful responses for 60 seconds, and allows retries after failures.
 - `coach.mjs` holds reviewed household actions and the Gemini adapters.
-- `app.mjs` connects each form to the two modules and renders results using text
-  nodes. The application has no build step, framework or third-party scripts.
+- `app.mjs` coordinates form input, request state, and domain functions.
+- `view.mjs` renders numerical comparisons and chart labels using text nodes. The application has no build step, framework or third-party scripts.
 
 ### Shared pickup example
 

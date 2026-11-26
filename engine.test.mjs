@@ -54,3 +54,7 @@ test('compares vehicle distance and rejects infeasible sharing', () => {
   assert.deepEqual(sharedPickup({households:2,vehicles:2,roundTripKm:8}), {baseline:16,shared:16,avoided:0});
   assert.equal(sharedPickup({households:2,vehicles:3,roundTripKm:8}), null);
 });
+
+test('rejects malformed upstream data before accessing timestamps', async () => {
+  await assert.rejects(forecast('Delhi', async () => ({ok:true,json:async () => ({hourly:{time:[]}})})), /Invalid forecast response/);
+});
